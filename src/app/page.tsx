@@ -1,92 +1,76 @@
-export default function HomePage() {
-  const courseCount: number = 4;
-  const isOpen: boolean = true;
-  const topics: string[] = [
-    "HTML",
-    "CSS",
-    "TypeScript",
-    "Next.js",
-  ];
-
-  type Course = {
-    id: number;
-    code: string;
-    title: string;
-    credits: number;
-    isOpen: boolean;
-  };
-
-  const courses: Course[] = [
-    {
-      id: 1,
-      code: "10301231",
-      title: "Web Technology",
-      credits: 3,
-      isOpen: true,
-    },
-    {
-      id: 2,
-      code: "10301232",
-      title: "Database Systems",
-      credits: 3,
-      isOpen: false,
-    },
-    {
-      id: 3,
-      code: "10301233",
-      title: "Data Structures and Algorithms",
-      credits: 3,
-      isOpen: true,
-    },
-    {
-      id: 4,
-      code: "10301234",
-      title: "Software Engineering",
-      credits: 3,
-      isOpen: true,
-    },
-  ];
-
+export default function Home() {
   return (
     <div>
-      {/* แบนเนอร์หัวเว็บไซต์สไตล์มหาวิทยาลัย */}
-      <section className="heroBanner">
-        <div className="heroContent">
-          <h1 className="heroTitle">มหาวิทยาลัยชั้นนำแห่งการสร้างสรรค์</h1>
-          <p className="heroSubtitle">ระบบสารสนเทศเพื่อการศึกษาและลงทะเบียนเรียนออนไลน์</p>
-          <div className="heroButtons">
-            <a href="/courses" className="btnPrimary">ดูรายวิชาทั้งหมด</a>
-            <a href="/about" className="btnSecondary">เกี่ยวกับเรา</a>
-          </div>
-        </div>
-      </section>
+      {/* หัวข้อหลัก */}
+      <h1 className="text-3xl font-bold text-emerald-900 border-b-2 border-emerald-900 pb-2 mb-6">
+        รายวิชาแนะนำประจำภาคเรียน
+      </h1>
 
-      {/* เนื้อหาหลักด้านล่าง */}
-      <main className="page">
-        <h1>รายวิชาแนะนำประจำภาคเรียน</h1>
-        <p><strong>จำนวนรายวิชาทั้งหมด:</strong> {courseCount} วิชา</p>
-        <p><strong>สถานะระบบ:</strong> {isOpen ? "เปิดใช้งานปกติ" : "ปิดปรับปรุงระบบ"}</p>
-
-        <div style={{ margin: "1.5rem 0" }}>
-          <h3 style={{ color: "#00563b", fontWeight: "600" }}>เทคโนโลยีหลักที่ศึกษา:</h3>
-          <ul>
-            {topics.map((topic) => (
-              <li key={topic}>{topic}</li>
-            ))}
+      {/* รายละเอียดด้านบน */}
+      <div className="space-y-1 mb-8 text-sm">
+        <p>จำนวนรายวิชาทั้งหมด: 4 วิชา</p>
+        <p>สถานะระบบ: เปิดใช้งานปกติ</p>
+        <div className="pt-2">
+          <p className="font-semibold text-emerald-900">เทคโนโลยีหลักที่ศึกษา:</p>
+          <ul className="list-disc list-inside pl-2 space-y-0.5 text-gray-700">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>TypeScript</li>
+            <li>Next.js</li>
           </ul>
         </div>
+      </div>
 
-        <section className="courseGrid">
-          {courses.map((course, index) => (
-            <article key={course.id} className="courseCard">
-              <h2>{index + 1}. {course.title}</h2>
-              <p><strong>รหัสวิชา:</strong> {course.code}</p>
-              <p><strong>หน่วยกิต:</strong> {course.credits} หน่วยกิต</p>
-              <p><strong>สถานะ:</strong> {course.isOpen ? "🟢 เปิดลงทะเบียน" : "🔴 ปิดลงทะเบียน"}</p>
-            </article>
-          ))}
-        </section>
-      </main>
+      {/* การ์ดรายวิชาทั้ง 4 */}
+      <div className="grid grid-cols-4 gap-6">
+        {/* วิชาที่ 1 */}
+        <div className="border border-gray-300 rounded-lg p-5 shadow-sm bg-white">
+          <h3 className="font-bold text-lg mb-3">1. Web Technology</h3>
+          <div className="space-y-1 text-sm text-gray-700">
+            <p>รหัสวิชา: 10301231</p>
+            <p>หน่วยกิต: 3 หน่วยกิต</p>
+            <p className="flex items-center gap-2">
+              สถานะ: <span className="inline-block w-2.5 h-2.5 bg-emerald-500 rounded-full"></span> เปิดลงทะเบียน
+            </p>
+          </div>
+        </div>
+
+        {/* วิชาที่ 2 */}
+        <div className="border border-gray-300 rounded-lg p-5 shadow-sm bg-white">
+          <h3 className="font-bold text-lg mb-3">2. Database Systems</h3>
+          <div className="space-y-1 text-sm text-gray-700">
+            <p>รหัสวิชา: 10301232</p>
+            <p>หน่วยกิต: 3 หน่วยกิต</p>
+            <p className="flex items-center gap-2">
+              สถานะ: <span className="inline-block w-2.5 h-2.5 bg-rose-500 rounded-full"></span> ปิดลงทะเบียน
+            </p>
+          </div>
+        </div>
+
+        {/* วิชาที่ 3 */}
+        <div className="border border-gray-300 rounded-lg p-5 shadow-sm bg-white">
+          <h3 className="font-bold text-lg mb-3">3. Data Structures and Algorithms</h3>
+          <div className="space-y-1 text-sm text-gray-700">
+            <p>รหัสวิชา: 10301233</p>
+            <p>หน่วยกิต: 3 หน่วยกิต</p>
+            <p className="flex items-center gap-2">
+              สถานะ: <span className="inline-block w-2.5 h-2.5 bg-emerald-500 rounded-full"></span> เปิดลงทะเบียน
+            </p>
+          </div>
+        </div>
+
+        {/* วิชาที่ 4 */}
+        <div className="border border-gray-300 rounded-lg p-5 shadow-sm bg-white">
+          <h3 className="font-bold text-lg mb-3">4. Software Engineering</h3>
+          <div className="space-y-1 text-sm text-gray-700">
+            <p>รหัสวิชา: 10301234</p>
+            <p>หน่วยกิต: 3 หน่วยกิต</p>
+            <p className="flex items-center gap-2">
+              สถานะ: <span className="inline-block w-2.5 h-2.5 bg-emerald-500 rounded-full"></span> เปิดลงทะเบียน
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }

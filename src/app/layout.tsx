@@ -1,48 +1,28 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Student Course Hub - มหาวิทยาลัย",
-  description: "ระบบลงทะเบียนและข้อมูลรายวิชา",
-};
+import Link from 'next/link'
+import './globals.css'
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="th">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* แถบ Header สีขาวสะอาดตา สไตล์มหาวิทยาลัย */}
-        <header className="universityHeader">
-          <div className="headerContainer">
-            <div className="logoArea">
-              <span className="uniNameEn">STUDENT COURSE HUB</span>
-              <span className="uniNameTh">มหาวิทยาลัยของเรา</span>
-            </div>
-            <nav className="navLinks">
-              <Link href="/" className="navItem">หน้าแรก</Link>
-              <Link href="/courses" className="navItem">รายวิชา</Link>
-              <Link href="/about" className="navItem">เกี่ยวกับ</Link>
-            </nav>
+      <body className="bg-white text-gray-800">
+        <div className="border-b px-12 py-4 flex justify-between items-center">
+          <div className="text-xl font-medium">STUDENT COURSE HUBมหาวิทยาลัยของเรา</div>
+          <div className="space-x-8 text-sm">
+            <Link href="/" className="hover:underline">หน้าแรก</Link>
+            <Link href="/courses" className="hover:underline">รายวิชา</Link>
+            <Link href="/bands" className="hover:underline">วงดนตรี</Link>
+            <Link href="/about" className="hover:underline">เกี่ยวกับ</Link>
           </div>
-        </header>
+        </div>
 
-        {children}
+        <main className="p-12">
+          {children}
+        </main>
       </body>
     </html>
-  );
+  )
 }
