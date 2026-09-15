@@ -1,6 +1,7 @@
-import Navbar from "../components/Navbar";
+
+import { coursesData } from "../../data/coursesdata";
 import CourseCard from "../components/CourseCard";
-import { coursesData } from "../components/data/coursesdata";
+import Navbar from "../components/Navbar";
 
 export default function CoursesPage() {
   return (
