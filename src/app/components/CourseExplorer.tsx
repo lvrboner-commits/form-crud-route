@@ -1,60 +1,147 @@
 "use client";
 
-import { useState, type ChangeEvent, type ComponentProps } from "react";
-
-import CourseCard from "./CourseCard";
+import { useState, type ChangeEvent } from "react";
 import { Course } from "../types/band";
+import CourseForm, { CourseDraft } from "./CourseForm";
+import CourseCard from "./CourseCard";
+
 
 type CourseExplorerProps = {
-    courses: Course[];
+  initialCourses: Course[];
 };
 
-export default function CourseExplorer({ courses }: CourseExplorerProps) {
-    const [keyword, setKeyword] = useState("");//ช่องค้นหา
+type NormalizedCourse = Course & {
+  status: "open" | "closed";
+};
 
-    function handleKeywordChange(event: ChangeEvent<HTMLInputElement>) {
-        setKeyword(event.target.value);
+function normalizeCourseStatus(status?: string): "open" | "closed" {
+  return status === "closed" ? "closed" : "open";
+}
+
+export default function CourseExplorer({ initialCourses }: CourseExplorerProps) {
+  const [courses, setCourses] = useState<NormalizedCourse[]>(() =>
+    initialCourses.map(
+      (course): NormalizedCourse => ({
+        ...course,
+        status: normalizeCourseStatus(course.status),
+      })
+    )
+  );
+  const [keyword, setKeyword] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  function handleKeywordChange(event: ChangeEvent<HTMLInputElement>) {
+    setKeyword(event.target.value);
+  }
+
+  function handleCreate(draft: CourseDraft) {
+    const newCourse: NormalizedCourse = {
+      id: crypto.randomUUID(),
+      code: draft.code.trim(),
+      name: draft.name.trim(),
+      instructors: [
+        {
+          id: crypto.randomUUID(),
+          name: draft.instructor.trim(),
+          role: "",
+          image: "",
+        },
+      ],
+      credits: Number(draft.credit),
+      status: "open",
+      title: "",
+      description: "",
+      category: "",
+      level: "",
+      duration: "",
+      image: "",
+    };
+    setCourses((currentCourses) => [...currentCourses, newCourse]);
+  }
+
+  function handleDelete(id: string) {
+    setCourses((currentCourses) => currentCourses.filter((course) => course.id !== id));
+  }
+
+  function handleUpdate(id: string, draft: CourseDraft) {
+    setCourses((currentCourses) =>
+      currentCourses.map((course) =>
+        course.id === id
+          ? {
+              ...course,
+              code: draft.code.trim(),
+              name: draft.name.trim(),
+              credits: Number(draft.credit),
+              instructors: [{
+                id: course.instructors[0]?.id ?? crypto.randomUUID(),
+                name: draft.instructor.trim(),
+                role: course.instructors[0]?.role ?? "",
+                image: course.instructors[0]?.image ?? "",
+              }],
+              status: course.status ?? "active",
+            }
+          : course
+      )
+    );
+    setEditingId(null);
+  }
+
+  function handleSave(draft: CourseDraft) {
+    if (editingId === null) {
+      handleCreate(draft);
+      return;
     }
+    handleUpdate(editingId, draft);
+  }
 
-    const searchText = keyword.trim().toLowerCase();
+  const editingCourse = courses.find((course) => course.id === editingId);
+  const formInitialCourse = editingCourse
+    ? {
+        id: editingCourse.id,
+        code: editingCourse.code,
+        name: editingCourse.name,
+        instructor: editingCourse.instructors[0]?.name ?? "",
+        credit: editingCourse.credits,
+      }
+    : undefined;
 
-    //เก็บผลการค้นหาไว้ที่ตัวแปลใหม่
-    const visibleCourses = courses.filter(
-        (course) =>
-            (course.title && course.title.toLowerCase().includes(searchText)) ||
-            course.code.includes(searchText)
-    );
+  const searchText = keyword.trim().toLowerCase();
+  const visibleCourses = courses.filter(
+    (course) =>
+      course.name.toLowerCase().includes(searchText) ||
+      course.code.toLowerCase().includes(searchText)
+  );
 
-    return (
-        <div className="max-w-6xl mx-auto px-6 py-8">
-            <h1 className="text-3xl font-bold mb-6">Course</h1>
+  return (
+    <div className="space-y-6">
+      <input
+        type="search"
+        aria-label="ค้นหารายวิชา"
+        value={keyword}
+        onChange={handleKeywordChange}
+        placeholder="ค้นหารายวิชา..."
+        className="p-2 w-full rounded"
+      />
 
-            {/* ช่องค้นหา */}
-            <div className="mb-8">
-                <input
-                    type="search"
-                    aria-label="ค้นหารายวิชา"
-                    value={keyword}
-                    onChange={handleKeywordChange}
-                    placeholder="ค้นหาชื่อวิชาหรือรหัสวิชา..."
-                    className="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-                />
-            </div>
+      <CourseForm
+        key={editingId ?? "new"}
+        initialCourse={formInitialCourse}
+        onSave={handleSave}
+        onCancel={() => setEditingId(null)}
+      />
 
-            {/* ส่วนแสดงรายวิชา... */}
-
-            {visibleCourses.length === 0 ? (
-                <p className="text-gray-500">ไม่พบรายวิชาที่ตรงกับเงื่อนไข</p>
-            ) : (
-                <section className="space-y-4">
-                    {visibleCourses.map((course) => (
-                        <CourseCard
-                            key={course.id}
-                            course={course as unknown as ComponentProps<typeof CourseCard>["course"]}
-                        />
-                    ))}
-                </section>
-            )}
-        </div>
-    );
+      <div className="space-y-4">
+        {visibleCourses.length === 0 ? (
+          <p className="text-gray-500">ไม่พบรายวิชาที่ตรงกับคำค้น</p>
+        ) : (
+          visibleCourses.map((course) => (
+            <CourseCard
+              key={course.id}
+              course={course}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
 }

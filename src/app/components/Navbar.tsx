@@ -1,26 +1,27 @@
-//navbar  home/courses/about
 import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="navbar" aria-label="เมนูหลัก">
-      <ul className="navList">
-        <li>
-          <Link className="navLink" href="/">
-            หน้าแรก
-          </Link>
-        </li>
-        <li>
-          <Link className="navLink" href="/courses">
-            รายวิชา
-          </Link>
-        </li>
-        <li>
-          <Link className="navLink" href="/about">
-            เกี่ยวกับ
-          </Link>
-        </li>
-      </ul>
-    </nav>
+    <header className="siteHeader">
+      <nav className="navbar" aria-label="เมนูหลัก">
+        <ul className="navList">
+          <li>
+            <Link className="navLink" href="/">หน้าแรก</Link>
+          </li>
+          <li>
+            <Link className="navLink" href="/courses">รายวิชา</Link>
+          </li>
+          <li>
+            <Link className="navLink" href="/about">เกี่ยวกับ</Link>
+          </li>
+          <li>
+            <Link className="navLink" href="/bands">วงดนตรี</Link>
+          </li>
+          <li>
+            <Link className="navLink" href="/games">เกม</Link>
+          </li>
+        </ul>
+      </nav>
+    </header>
   );
 }

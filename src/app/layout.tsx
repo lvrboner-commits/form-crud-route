@@ -16,6 +16,7 @@ export default function RootLayout({
             <Link href="/courses" className="hover:underline">รายวิชา</Link>
             <Link href="/bands" className="hover:underline">วงดนตรี</Link>
             <Link href="/about" className="hover:underline">เกี่ยวกับ</Link>
+            <Link href="/games" className="hover:underline">เกม</Link>
           </div>
         </div>
 
